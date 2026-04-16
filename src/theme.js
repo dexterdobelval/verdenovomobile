@@ -1,9 +1,9 @@
 export const colors = {
   // Verdes (30% da interface)
-  primary: '#02ad27',
-  primaryDark: '#018f20',
-  primaryLight: '#D0F5D8',
-  primaryMid: '#9ADBA8',
+  primary: '#209948',
+  primaryDark: '#177a39',
+  primaryLight: '#D2EFD9',
+  primaryMid: '#8ECFA0',
 
   // Neutros (60% da interface)
   white: '#FFFFFF',

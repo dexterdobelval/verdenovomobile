@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Share } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme';
@@ -17,9 +17,7 @@ export default function DrawerMenu(props) {
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <View style={styles.logoRow}>
-          <View style={styles.logoIcon}>
-            <Ionicons name="leaf" size={22} color={colors.white} />
-          </View>
+          <Image source={require('../../assets/Verdenovologo.png')} style={styles.logoImg} resizeMode="contain" />
           <View>
             <Text style={styles.appName}>VerDeNovo</Text>
             <Text style={styles.appSub}>Reciclagem & Consciência</Text>
@@ -54,6 +52,22 @@ export default function DrawerMenu(props) {
             </TouchableOpacity>
           );
         })}
+
+        <View style={styles.dividerMenu} />
+
+        <TouchableOpacity
+          style={styles.shareBtn}
+          activeOpacity={0.75}
+          onPress={() => Share.share({
+            message: 'Conheça o VerDeNovo! 🌱 Encontre pontos de coleta perto de você e aprenda a descartar o lixo do jeito certo. Baixe agora e ajude o planeta!',
+            title: 'VerDeNovo – Reciclagem & Consciência',
+          })}
+        >
+          <View style={styles.shareIconWrap}>
+            <Ionicons name="share-social-outline" size={20} color={colors.primary} />
+          </View>
+          <Text style={styles.shareText}>Compartilhar o app</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.footerBox}>
@@ -73,11 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   logoRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  logoIcon: {
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    padding: 10,
-  },
+  logoImg: { width: 42, height: 42 },
   appName: { fontSize: 20, fontWeight: '800', color: colors.text, letterSpacing: 0.3 },
   appSub: { fontSize: 11, color: colors.textLight, marginTop: 1 },
   divider: { height: 1, backgroundColor: colors.border, marginHorizontal: 20, marginBottom: 8 },
@@ -118,6 +128,22 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     backgroundColor: colors.primary,
   },
+  dividerMenu: { height: 1, backgroundColor: colors.border, marginVertical: 10 },
+  shareBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 14,
+    backgroundColor: colors.primaryLight,
+  },
+  shareIconWrap: {
+    width: 36, height: 36, borderRadius: 10,
+    backgroundColor: colors.white,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  shareText: { flex: 1, fontSize: 15, fontWeight: '600', color: colors.primaryDark },
   footerBox: {
     position: 'absolute',
     bottom: 32,

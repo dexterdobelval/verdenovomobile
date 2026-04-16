@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
 import { colors } from '../theme';
 
 export default function SplashScreen({ navigation }) {
@@ -30,14 +29,14 @@ export default function SplashScreen({ navigation }) {
     <View style={styles.container}>
       <Animated.View style={[styles.content, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
 
-        <Animated.View style={[styles.iconWrapper, { transform: [{ scale: scaleIcon }, { scale: pulseAnim }] }]}>
-          <Ionicons name="leaf" size={64} color={colors.white} />
+        <Animated.View style={{ transform: [{ scale: scaleIcon }, { scale: pulseAnim }], marginBottom: 24 }}>
+          <Image source={require('../../assets/Verdenovologo.png')} style={styles.logo} resizeMode="contain" />
         </Animated.View>
 
         <Text style={styles.title}>VerDeNovo</Text>
-        <Text style={styles.subtitle}>Recicle. Conscientize. Transforme.</Text>
+        <Text style={styles.subtitle}>Descarte certo. Planeta melhor.</Text>
         <Text style={styles.desc}>
-          Encontre pontos de coleta perto de você e aprenda a descartar corretamente cada tipo de resíduo.
+          Encontre pontos de coleta perto de você e saiba como descartar lixo do jeito certo.
         </Text>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.replace('Main')} activeOpacity={0.85}>
@@ -57,26 +56,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   content: { alignItems: 'center', width: '100%' },
-  iconWrapper: {
-    backgroundColor: colors.primaryDark,
-    borderRadius: 32,
-    padding: 24,
-    marginBottom: 24,
+  logo: { width: 112, height: 112 },
+  title: {
+    fontSize: 42,
+    fontWeight: '900',
+    color: colors.white,
+    letterSpacing: -0.5,
   },
-  title: { fontSize: 38, fontWeight: '800', color: colors.white, letterSpacing: 1 },
   subtitle: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.75)',
-    marginTop: 6,
-    marginBottom: 24,
-    letterSpacing: 0.5,
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.9)',
+    marginTop: 8,
+    marginBottom: 20,
+    letterSpacing: 0.3,
   },
   desc: {
     fontSize: 15,
-    color: 'rgba(255,255,255,0.85)',
+    fontWeight: '400',
+    color: 'rgba(255,255,255,0.7)',
     textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 40,
+    lineHeight: 24,
+    marginBottom: 48,
   },
   button: {
     flexDirection: 'row',

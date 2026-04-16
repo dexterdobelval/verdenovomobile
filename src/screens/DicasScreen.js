@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme';
 
@@ -177,7 +177,7 @@ export default function DicasScreen({ navigation }) {
               <Ionicons name="menu" size={24} color={colors.white} />
             </TouchableOpacity>
             <View style={styles.logoWrap}>
-              <Ionicons name="leaf" size={18} color={colors.white} />
+              <Image source={require('../../assets/Verdenovologo.png')} style={styles.logoImg} resizeMode="contain" />
               <Text style={styles.logoText}>VerDeNovo</Text>
             </View>
             <View style={{ width: 40 }} />
@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   logoWrap: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  logoImg: { width: 20, height: 20 },
   logoText: { fontSize: 17, fontWeight: '800', color: colors.white, letterSpacing: 0.5 },
   headerTitle: { fontSize: 26, fontWeight: '800', color: colors.white, lineHeight: 34 },
   headerSub: { fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 },
