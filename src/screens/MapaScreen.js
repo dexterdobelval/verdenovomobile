@@ -180,6 +180,11 @@ export default function MapaScreen({ navigation }) {
                 onPress={() => { setFiltro(f); fecharCard(); }}
                 activeOpacity={0.8}
               >
+                {cfg && (
+                  <View style={[styles.filtroIconWrap, { backgroundColor: ativo ? 'rgba(255,255,255,0.25)' : cfg.color + '30' }]}>
+                    <Ionicons name={cfg.icon} size={14} color={ativo ? colors.white : cfg.color} />
+                  </View>
+                )}
                 <Text style={[styles.filtroText, ativo && { color: cfg ? colors.white : colors.primary, fontWeight: '700' }]}>
                   {f}
                 </Text>
@@ -233,7 +238,7 @@ export default function MapaScreen({ navigation }) {
         {/* Botão minha localização */}
         {userLocation && (
           <TouchableOpacity style={styles.myLocBtn} onPress={irParaMinhaLocalizacao}>
-            <Ionicons name="locate" size={22} color={colors.primary} />
+            <Ionicons name="locate" size={26} color={colors.primary} />
           </TouchableOpacity>
         )}
 
@@ -301,12 +306,18 @@ const styles = StyleSheet.create({
   logoImg: { width: 20, height: 20 },
   logoText: { fontSize: 17, fontWeight: '800', color: colors.white, letterSpacing: 0.5 },
 
-  filtrosScroll: { flexDirection: 'row', gap: 8, flexWrap: 'nowrap', paddingBottom: 4 },
+  filtrosScroll: { flexDirection: 'row', gap: 8, flexWrap: 'nowrap', paddingBottom: 8 },
   filtroBtn: {
-    paddingHorizontal: 12, paddingVertical: 6,
-    borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.2)',
+    flexDirection: 'row', alignItems: 'center', gap: 6,
+    paddingHorizontal: 14, paddingVertical: 10,
+    borderRadius: 24, backgroundColor: 'rgba(255,255,255,0.2)',
+    minHeight: 44,
   },
-  filtroText: { fontSize: 12, color: 'rgba(255,255,255,0.9)', fontWeight: '500' },
+  filtroIconWrap: {
+    width: 22, height: 22, borderRadius: 11,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  filtroText: { fontSize: 13, color: 'rgba(255,255,255,0.95)', fontWeight: '500' },
 
   mapContainer: { flex: 1 },
   map: { flex: 1 },
@@ -314,12 +325,12 @@ const styles = StyleSheet.create({
   loadingText: { fontSize: 14, color: colors.textLight },
 
   myLocBtn: {
-    position: 'absolute', bottom: 16, right: 16,
-    backgroundColor: colors.white, borderRadius: 28,
-    width: 48, height: 48,
+    position: 'absolute', bottom: 80, right: 16,
+    backgroundColor: colors.white, borderRadius: 30,
+    width: 56, height: 56,
     alignItems: 'center', justifyContent: 'center',
-    elevation: 4,
-    shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 6, shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+    shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 8, shadowOffset: { width: 0, height: 3 },
   },
   badge: {
     position: 'absolute', top: 12, left: 12,

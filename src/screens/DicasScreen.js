@@ -95,7 +95,7 @@ function CatCard({ cat, isOpen, onPress, tab, setTab }) {
     <View style={styles.catCard}>
       <TouchableOpacity style={styles.catHeader} onPress={onPress} activeOpacity={0.8}>
         <View style={[styles.catIcon, { backgroundColor: cat.cor + '18' }]}>
-          <Ionicons name={cat.icon} size={20} color={cat.cor} />
+          <Ionicons name={cat.icon} size={26} color={cat.cor} />
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.catTitle}>{cat.titulo}</Text>
@@ -190,7 +190,7 @@ export default function DicasScreen({ navigation }) {
       <AnimatedCard delay={100}>
         <View style={styles.fatoCard}>
           <View style={styles.fatoIconWrap}>
-            <Ionicons name={fato.icon} size={20} color={colors.primary} />
+            <Ionicons name={fato.icon} size={28} color={colors.white} />
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.fatoLabel}>💡 Você sabia?</Text>
@@ -241,15 +241,18 @@ const styles = StyleSheet.create({
 
   fatoCard: {
     flexDirection: 'row', alignItems: 'center',
-    backgroundColor: colors.white, borderRadius: 16,
-    margin: 16, padding: 16, gap: 12,
-    borderWidth: 1, borderColor: colors.border,
-    elevation: 2, shadowColor: '#2C3E50',
-    shadowOpacity: 0.05, shadowRadius: 6, shadowOffset: { width: 0, height: 2 },
+    backgroundColor: colors.primaryDark,
+    borderRadius: 20,
+    margin: 16, padding: 20, gap: 16,
+    elevation: 4, shadowColor: colors.primaryDark,
+    shadowOpacity: 0.3, shadowRadius: 10, shadowOffset: { width: 0, height: 4 },
   },
-  fatoIconWrap: { backgroundColor: colors.primaryLight, borderRadius: 12, padding: 10 },
-  fatoLabel: { fontSize: 11, fontWeight: '700', color: colors.primary, marginBottom: 3 },
-  fatoText: { fontSize: 13, color: colors.text, lineHeight: 18, fontWeight: '500' },
+  fatoIconWrap: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 16, padding: 14,
+  },
+  fatoLabel: { fontSize: 12, fontWeight: '800', color: 'rgba(255,255,255,0.75)', marginBottom: 5, letterSpacing: 0.4 },
+  fatoText: { fontSize: 15, color: colors.white, lineHeight: 21, fontWeight: '600' },
 
   sectionTitle: { fontSize: 17, fontWeight: '700', color: colors.text, marginHorizontal: 16, marginBottom: 2 },
   sectionSub: { fontSize: 12, color: colors.textLight, marginHorizontal: 16, marginBottom: 12 },
@@ -259,24 +262,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 16, marginBottom: 10,
     borderWidth: 1, borderColor: colors.border, overflow: 'hidden',
   },
-  catHeader: { flexDirection: 'row', alignItems: 'center', padding: 14, gap: 12 },
-  catIcon: { borderRadius: 12, padding: 9 },
-  catTitle: { fontSize: 15, fontWeight: '700', color: colors.text },
-  catDesc: { fontSize: 12, color: colors.textLight, marginTop: 2, fontWeight: '400' },
+  catHeader: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 14 },
+  catIcon: { borderRadius: 14, padding: 12 },
+  catTitle: { fontSize: 16, fontWeight: '700', color: colors.text },
+  catDesc: { fontSize: 13, color: colors.textLight, marginTop: 3, fontWeight: '400' },
 
   catBody: { borderTopWidth: 1, borderTopColor: colors.border },
   tabs: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: colors.border },
-  tabBtn: { flex: 1, paddingVertical: 10, alignItems: 'center' },
-  tabText: { fontSize: 12, color: colors.textLight, fontWeight: '500' },
-  tabContent: { padding: 14, gap: 8 },
+  tabBtn: { flex: 1, paddingVertical: 12, alignItems: 'center' },
+  tabText: { fontSize: 13, color: colors.textLight, fontWeight: '500' },
+  tabContent: { padding: 16, gap: 10 },
 
   itemRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  dot: { width: 7, height: 7, borderRadius: 4, flexShrink: 0 },
-  itemText: { fontSize: 13, color: colors.text, flex: 1, fontWeight: '500' },
+  dot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
+  itemText: { fontSize: 14, color: colors.text, flex: 1, fontWeight: '500' },
 
   cuidadoRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
-  cuidadoText: { fontSize: 13, color: colors.text, flex: 1, lineHeight: 18, fontWeight: '500' },
+  cuidadoText: { fontSize: 14, color: colors.text, flex: 1, lineHeight: 20, fontWeight: '500' },
 
-  curiosidadeBox: { alignItems: 'center', paddingVertical: 16, gap: 10 },
-  curiosidadeText: { fontSize: 14, color: colors.text, textAlign: 'center', lineHeight: 20, fontWeight: '500' },
+  curiosidadeBox: { alignItems: 'center', paddingVertical: 18, gap: 12 },
+  curiosidadeText: { fontSize: 15, color: colors.text, textAlign: 'center', lineHeight: 22, fontWeight: '500' },
 });

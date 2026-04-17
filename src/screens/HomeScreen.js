@@ -223,15 +223,13 @@ export default function HomeScreen({ navigation }) {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tipsScroll}>
         {tips.map((tip, i) => (
-          <AnimatedCard key={i} delay={380 + i * 80}>
-            <View style={[styles.tipCard, { borderTopColor: tip.color }]}>
-              <View style={[styles.tipIconWrap, { backgroundColor: tip.bg }]}>
-                <Ionicons name={tip.icon} size={26} color={tip.color} />
-              </View>
-              <Text style={[styles.tipLabel, { color: tip.color }]}>{tip.label}</Text>
-              <Text style={styles.tipDesc}>{tip.desc}</Text>
+          <View key={i} style={[styles.tipCard, { borderTopColor: tip.color }]}>
+            <View style={[styles.tipIconWrap, { backgroundColor: tip.bg }]}>
+              <Ionicons name={tip.icon} size={26} color={tip.color} />
             </View>
-          </AnimatedCard>
+            <Text style={[styles.tipLabel, { color: tip.color }]}>{tip.label}</Text>
+            <Text style={styles.tipDesc}>{tip.desc}</Text>
+          </View>
         ))}
       </ScrollView>
 
@@ -305,20 +303,27 @@ const styles = StyleSheet.create({
     padding: 14, gap: 12,
     borderWidth: 1, borderColor: colors.border,
   },
-  tipsScroll: { paddingHorizontal: 16, paddingBottom: 4, gap: 10 },
+  tipsScroll: {
+    paddingHorizontal: 16,
+    paddingBottom: 4,
+    gap: 12,
+    alignItems: 'stretch',
+  },
   tipCard: {
-    width: 140,
+    width: 160,
+    minHeight: 160,
     backgroundColor: colors.white,
     borderRadius: 16,
-    padding: 14,
+    padding: 16,
     borderTopWidth: 4,
     borderWidth: 1,
     borderColor: colors.border,
     elevation: 2,
     shadowColor: '#2C3E50', shadowOpacity: 0.07, shadowRadius: 6, shadowOffset: { width: 0, height: 2 },
-    gap: 8,
+    gap: 10,
+    justifyContent: 'flex-start',
   },
-  tipIconWrap: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  tipLabel: { fontSize: 13, fontWeight: '800' },
-  tipDesc: { fontSize: 11, color: colors.textLight, lineHeight: 16 },
+  tipIconWrap: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  tipLabel: { fontSize: 14, fontWeight: '800' },
+  tipDesc: { fontSize: 12, color: colors.textLight, lineHeight: 17, flexShrink: 1 },
 });
