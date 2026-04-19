@@ -9,6 +9,7 @@ import SplashScreen from './src/screens/SplashScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import MapaScreen from './src/screens/MapaScreen';
 import DicasScreen from './src/screens/DicasScreen';
+import SobreScreen from './src/screens/SobreScreen';
 import DrawerMenu from './src/components/DrawerMenu';
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +24,7 @@ function MainDrawer() {
       <Drawer.Screen name="Início" component={HomeScreen} />
       <Drawer.Screen name="Mapa" component={MapaScreen} />
       <Drawer.Screen name="Dicas" component={DicasScreen} />
+      <Drawer.Screen name="Sobre" component={SobreScreen} />
     </Drawer.Navigator>
   );
 }

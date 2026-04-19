@@ -92,9 +92,9 @@ function CatCard({ cat, isOpen, onPress, tab, setTab }) {
   }, [isOpen]);
 
   return (
-    <View style={styles.catCard}>
+    <View style={[styles.catCard, { shadowColor: cat.cor }]}>
       <TouchableOpacity style={styles.catHeader} onPress={onPress} activeOpacity={0.8}>
-        <View style={[styles.catIcon, { backgroundColor: cat.cor + '18' }]}>
+        <View style={[styles.catIcon, { backgroundColor: cat.cor + '25' }]}>
           <Ionicons name={cat.icon} size={26} color={cat.cor} />
         </View>
         <View style={{ flex: 1 }}>
@@ -116,7 +116,7 @@ function CatCard({ cat, isOpen, onPress, tab, setTab }) {
             {['itens', 'cuidados', 'curiosidade'].map((t) => (
               <TouchableOpacity
                 key={t}
-                style={[styles.tabBtn, tab === t && { borderBottomColor: cat.cor, borderBottomWidth: 2 }]}
+                style={[styles.tabBtn, tab === t && { backgroundColor: cat.cor + '20' }]}
                 onPress={() => setTab(t)}
               >
                 <Text style={[styles.tabText, tab === t && { color: cat.cor, fontWeight: '700' }]}>
@@ -129,7 +129,7 @@ function CatCard({ cat, isOpen, onPress, tab, setTab }) {
           <View style={styles.tabContent}>
             {tab === 'itens' && cat.itens.map((item, i) => (
               <View key={i} style={styles.itemRow}>
-                <View style={[styles.dot, { backgroundColor: cat.cor }]} />
+                <View style={[styles.dotBullet, { backgroundColor: cat.cor }]} />
                 <Text style={styles.itemText}>{item}</Text>
               </View>
             ))}
@@ -140,8 +140,8 @@ function CatCard({ cat, isOpen, onPress, tab, setTab }) {
               </View>
             ))}
             {tab === 'curiosidade' && (
-              <View style={styles.curiosidadeBox}>
-                <Ionicons name="bulb-outline" size={24} color={cat.cor} />
+              <View style={[styles.curiosidadeBox, { backgroundColor: cat.cor + '15' }]}>
+                <Ionicons name="bulb-outline" size={28} color={cat.cor} />
                 <Text style={styles.curiosidadeText}>{cat.curiosidade}</Text>
               </View>
             )}
@@ -171,6 +171,7 @@ export default function DicasScreen({ navigation }) {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
       <View style={styles.header}>
+        <View style={styles.blobHeader} />
         <Animated.View style={{ opacity: headerFade, transform: [{ translateY: headerSlide }] }}>
           <View style={styles.headerTop}>
             <TouchableOpacity style={styles.menuBtn} onPress={() => navigation.openDrawer()}>
@@ -222,64 +223,87 @@ export default function DicasScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1, backgroundColor: '#EAF4EC' },
 
-  header: { backgroundColor: colors.primary, paddingTop: 56, paddingBottom: 28, paddingHorizontal: 20 },
+  header: {
+    backgroundColor: colors.primary,
+    paddingTop: 56, paddingBottom: 32, paddingHorizontal: 20,
+    borderBottomLeftRadius: 36, borderBottomRightRadius: 36,
+    overflow: 'hidden',
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.3, shadowRadius: 16, shadowOffset: { width: 0, height: 8 },
+    elevation: 10,
+  },
+  blobHeader: {
+    position: 'absolute', top: -50, right: -50,
+    width: 180, height: 180, borderRadius: 90,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
   headerTop: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20,
   },
   menuBtn: {
-    width: 40, height: 40, borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 44, height: 44, borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.25)',
     alignItems: 'center', justifyContent: 'center',
+    borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)',
   },
   logoWrap: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  logoImg: { width: 20, height: 20 },
+  logoImg: { width: 22, height: 22 },
   logoText: { fontSize: 17, fontWeight: '800', color: colors.white, letterSpacing: 0.5 },
-  headerTitle: { fontSize: 26, fontWeight: '800', color: colors.white, lineHeight: 34 },
-  headerSub: { fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 },
+  headerTitle: { fontSize: 28, fontWeight: '800', color: colors.white, lineHeight: 36 },
+  headerSub: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginTop: 6 },
 
   fatoCard: {
     flexDirection: 'row', alignItems: 'center',
     backgroundColor: colors.primaryDark,
-    borderRadius: 20,
-    margin: 16, padding: 20, gap: 16,
-    elevation: 4, shadowColor: colors.primaryDark,
-    shadowOpacity: 0.3, shadowRadius: 10, shadowOffset: { width: 0, height: 4 },
+    borderRadius: 28,
+    margin: 20, padding: 20, gap: 16,
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.35, shadowRadius: 14, shadowOffset: { width: 0, height: 6 },
+    elevation: 8,
+    borderWidth: 2, borderColor: 'rgba(255,255,255,0.15)',
   },
   fatoIconWrap: {
     backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 16, padding: 14,
+    borderRadius: 20, padding: 14,
   },
   fatoLabel: { fontSize: 12, fontWeight: '800', color: 'rgba(255,255,255,0.75)', marginBottom: 5, letterSpacing: 0.4 },
   fatoText: { fontSize: 15, color: colors.white, lineHeight: 21, fontWeight: '600' },
 
-  sectionTitle: { fontSize: 17, fontWeight: '700', color: colors.text, marginHorizontal: 16, marginBottom: 2 },
-  sectionSub: { fontSize: 12, color: colors.textLight, marginHorizontal: 16, marginBottom: 12 },
+  sectionTitle: { fontSize: 18, fontWeight: '800', color: colors.text, marginHorizontal: 20, marginBottom: 2 },
+  sectionSub: { fontSize: 12, color: colors.textLight, marginHorizontal: 20, marginBottom: 14 },
 
   catCard: {
-    backgroundColor: colors.white, borderRadius: 16,
-    marginHorizontal: 16, marginBottom: 10,
-    borderWidth: 1, borderColor: colors.border, overflow: 'hidden',
+    backgroundColor: colors.white,
+    borderRadius: 28,
+    marginHorizontal: 20, marginBottom: 12,
+    shadowOpacity: 0.15, shadowRadius: 12, shadowOffset: { width: 0, height: 5 },
+    elevation: 6,
+    overflow: 'hidden',
+    borderWidth: 2, borderColor: 'rgba(255,255,255,0.9)',
   },
-  catHeader: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 14 },
-  catIcon: { borderRadius: 14, padding: 12 },
+  catHeader: { flexDirection: 'row', alignItems: 'center', padding: 18, gap: 14 },
+  catIcon: { borderRadius: 20, padding: 12 },
   catTitle: { fontSize: 16, fontWeight: '700', color: colors.text },
-  catDesc: { fontSize: 13, color: colors.textLight, marginTop: 3, fontWeight: '400' },
+  catDesc: { fontSize: 13, color: colors.textLight, marginTop: 3 },
 
-  catBody: { borderTopWidth: 1, borderTopColor: colors.border },
-  tabs: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: colors.border },
-  tabBtn: { flex: 1, paddingVertical: 12, alignItems: 'center' },
-  tabText: { fontSize: 13, color: colors.textLight, fontWeight: '500' },
+  catBody: { borderTopWidth: 1, borderTopColor: '#EAF4EC' },
+  tabs: { flexDirection: 'row', gap: 8, padding: 12 },
+  tabBtn: {
+    flex: 1, paddingVertical: 10, alignItems: 'center',
+    borderRadius: 16,
+  },
+  tabText: { fontSize: 12, color: colors.textLight, fontWeight: '500' },
   tabContent: { padding: 16, gap: 10 },
 
   itemRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  dot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
+  dotBullet: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
   itemText: { fontSize: 14, color: colors.text, flex: 1, fontWeight: '500' },
 
   cuidadoRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   cuidadoText: { fontSize: 14, color: colors.text, flex: 1, lineHeight: 20, fontWeight: '500' },
 
-  curiosidadeBox: { alignItems: 'center', paddingVertical: 18, gap: 12 },
+  curiosidadeBox: { alignItems: 'center', paddingVertical: 20, paddingHorizontal: 12, gap: 12, borderRadius: 20 },
   curiosidadeText: { fontSize: 15, color: colors.text, textAlign: 'center', lineHeight: 22, fontWeight: '500' },
 });

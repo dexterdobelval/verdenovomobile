@@ -9,88 +9,26 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme';
 
 const pontos = [
-  // Barueri
-  {
-    id: '1', nome: 'Ecoponto Barueri Centro',
-    tipo: 'Geral',
-    endereco: 'R. Cel. Marcos Rodrigues de Barros, 300 – Barueri',
-    lat: -23.5044, lng: -46.8761,
-  },
-  {
-    id: '2', nome: 'Recicla Jardim Silveira',
-    tipo: 'Papel e Plástico',
-    endereco: 'R. Henriqueta Mendes Guerra, 550 – Jd. Silveira, Barueri',
-    lat: -23.4963, lng: -46.8901,
-  },
-  {
-    id: '3', nome: 'TechRecicla Barueri',
-    tipo: 'Eletrônicos',
-    endereco: 'Av. Sebastião Davino dos Reis, 680 – Barueri',
-    lat: -23.5118, lng: -46.8643,
-  },
-  {
-    id: '4', nome: 'PilhaPoint Engenho Novo',
-    tipo: 'Pilhas e Baterias',
-    endereco: 'R. Guilherme Lorenzini, 1200 – Engenho Novo, Barueri',
-    lat: -23.5081, lng: -46.8812,
-  },
-  {
-    id: '5', nome: 'EcoFarma Barueri',
-    tipo: 'Medicamentos',
-    endereco: 'R. Tupinambás, 88 – Centro, Barueri',
-    lat: -23.5009, lng: -46.8698,
-  },
-  {
-    id: '6', nome: 'Coleta Verde Barueri Norte',
-    tipo: 'Papel e Plástico',
-    endereco: 'Av. Presidente Médici, 430 – Barueri',
-    lat: -23.4881, lng: -46.8774,
-  },
-  // Itapevi
-  {
-    id: '7', nome: 'Ecoponto Itapevi Centro',
-    tipo: 'Geral',
-    endereco: 'Av. Presidente Vargas, 500 – Centro, Itapevi',
-    lat: -23.5488, lng: -46.9338,
-  },
-  {
-    id: '8', nome: 'EletroDescarte Itapevi',
-    tipo: 'Eletrônicos',
-    endereco: 'R. Benedito Rodrigues, 90 – Jd. Nova Itapevi',
-    lat: -23.5421, lng: -46.9271,
-  },
-  {
-    id: '9', nome: 'BateriaRecicla Itapevi',
-    tipo: 'Pilhas e Baterias',
-    endereco: 'R. Américo Emílio Romi, 340 – Itapevi',
-    lat: -23.5561, lng: -46.9398,
-  },
-  {
-    id: '10', nome: 'Descarte Seguro Itapevi',
-    tipo: 'Medicamentos',
-    endereco: 'R. Sete de Setembro, 155 – Centro, Itapevi',
-    lat: -23.5508, lng: -46.9312,
-  },
-  {
-    id: '11', nome: 'Coleta Verde Itapevi Sul',
-    tipo: 'Papel e Plástico',
-    endereco: 'R. João Pessoa, 210 – Jd. Briquet, Itapevi',
-    lat: -23.5612, lng: -46.9258,
-  },
-  {
-    id: '12', nome: 'Ecoponto Itapevi Leste',
-    tipo: 'Geral',
-    endereco: 'R. das Acácias, 88 – Jd. Paulista, Itapevi',
-    lat: -23.5447, lng: -46.9189,
-  },
+  { id: '1',  nome: 'Ecoponto Barueri Centro',    tipo: 'Geral',            endereco: 'R. Cel. Marcos Rodrigues de Barros, 300 – Barueri',      lat: -23.5044, lng: -46.8761 },
+  { id: '2',  nome: 'Recicla Jardim Silveira',     tipo: 'Papel e Plástico', endereco: 'R. Henriqueta Mendes Guerra, 550 – Jd. Silveira, Barueri', lat: -23.4963, lng: -46.8901 },
+  { id: '3',  nome: 'TechRecicla Barueri',         tipo: 'Eletrônicos',      endereco: 'Av. Sebastião Davino dos Reis, 680 – Barueri',            lat: -23.5118, lng: -46.8643 },
+  { id: '4',  nome: 'PilhaPoint Engenho Novo',     tipo: 'Pilhas e Baterias',endereco: 'R. Guilherme Lorenzini, 1200 – Engenho Novo, Barueri',    lat: -23.5081, lng: -46.8812 },
+  { id: '5',  nome: 'EcoFarma Barueri',            tipo: 'Medicamentos',     endereco: 'R. Tupinambás, 88 – Centro, Barueri',                     lat: -23.5009, lng: -46.8698 },
+  { id: '6',  nome: 'Coleta Verde Barueri Norte',  tipo: 'Papel e Plástico', endereco: 'Av. Presidente Médici, 430 – Barueri',                    lat: -23.4881, lng: -46.8774 },
+  { id: '7',  nome: 'Ecoponto Itapevi Centro',     tipo: 'Geral',            endereco: 'Av. Presidente Vargas, 500 – Centro, Itapevi',            lat: -23.5488, lng: -46.9338 },
+  { id: '8',  nome: 'EletroDescarte Itapevi',      tipo: 'Eletrônicos',      endereco: 'R. Benedito Rodrigues, 90 – Jd. Nova Itapevi',            lat: -23.5421, lng: -46.9271 },
+  { id: '9',  nome: 'BateriaRecicla Itapevi',      tipo: 'Pilhas e Baterias',endereco: 'R. Américo Emílio Romi, 340 – Itapevi',                   lat: -23.5561, lng: -46.9398 },
+  { id: '10', nome: 'Descarte Seguro Itapevi',     tipo: 'Medicamentos',     endereco: 'R. Sete de Setembro, 155 – Centro, Itapevi',              lat: -23.5508, lng: -46.9312 },
+  { id: '11', nome: 'Coleta Verde Itapevi Sul',    tipo: 'Papel e Plástico', endereco: 'R. João Pessoa, 210 – Jd. Briquet, Itapevi',              lat: -23.5612, lng: -46.9258 },
+  { id: '12', nome: 'Ecoponto Itapevi Leste',      tipo: 'Geral',            endereco: 'R. das Acácias, 88 – Jd. Paulista, Itapevi',             lat: -23.5447, lng: -46.9189 },
 ];
 
 const tipoConfig = {
-  'Geral':             { color: colors.primary,  icon: 'leaf-outline',              pinColor: colors.primary  },
-  'Papel e Plástico':  { color: '#F0A500',        icon: 'newspaper-outline',         pinColor: '#F0A500'       },
-  'Eletrônicos':       { color: colors.accent,    icon: 'hardware-chip-outline',     pinColor: colors.accent   },
-  'Pilhas e Baterias': { color: colors.danger,    icon: 'battery-charging-outline',  pinColor: colors.danger   },
-  'Medicamentos':      { color: '#9B59B6',        icon: 'medkit-outline',            pinColor: '#9B59B6'       },
+  'Geral':             { color: colors.primary,  icon: 'leaf-outline',             pinColor: colors.primary  },
+  'Papel e Plástico':  { color: '#F0A500',        icon: 'newspaper-outline',        pinColor: '#F0A500'       },
+  'Eletrônicos':       { color: colors.accent,    icon: 'hardware-chip-outline',    pinColor: colors.accent   },
+  'Pilhas e Baterias': { color: colors.danger,    icon: 'battery-charging-outline', pinColor: colors.danger   },
+  'Medicamentos':      { color: '#9B59B6',        icon: 'medkit-outline',           pinColor: '#9B59B6'       },
 };
 
 const FILTROS = ['Todos', 'Geral', 'Papel e Plástico', 'Eletrônicos', 'Pilhas e Baterias', 'Medicamentos'];
@@ -155,8 +93,9 @@ export default function MapaScreen({ navigation }) {
   return (
     <View style={styles.container}>
 
-      {/* Header */}
+      {/* Header clay */}
       <View style={styles.header}>
+        <View style={styles.blobHeader} />
         <View style={styles.headerTop}>
           <TouchableOpacity style={styles.menuBtn} onPress={() => navigation.openDrawer()}>
             <Ionicons name="menu" size={24} color={colors.white} />
@@ -176,12 +115,15 @@ export default function MapaScreen({ navigation }) {
             return (
               <TouchableOpacity
                 key={f}
-                style={[styles.filtroBtn, ativo && { backgroundColor: cfg ? cfg.color : colors.white }]}
+                style={[
+                  styles.filtroBtn,
+                  ativo && { backgroundColor: cfg ? cfg.color : colors.white, borderColor: 'transparent' },
+                ]}
                 onPress={() => { setFiltro(f); fecharCard(); }}
                 activeOpacity={0.8}
               >
                 {cfg && (
-                  <View style={[styles.filtroIconWrap, { backgroundColor: ativo ? 'rgba(255,255,255,0.25)' : cfg.color + '30' }]}>
+                  <View style={[styles.filtroIconWrap, { backgroundColor: ativo ? 'rgba(255,255,255,0.3)' : cfg.color + '30' }]}>
                     <Ionicons name={cfg.icon} size={14} color={ativo ? colors.white : cfg.color} />
                   </View>
                 )}
@@ -235,21 +177,21 @@ export default function MapaScreen({ navigation }) {
           </MapView>
         )}
 
-        {/* Botão minha localização */}
+        {/* Botão minha localização clay */}
         {userLocation && (
           <TouchableOpacity style={styles.myLocBtn} onPress={irParaMinhaLocalizacao}>
             <Ionicons name="locate" size={26} color={colors.primary} />
           </TouchableOpacity>
         )}
 
-        {/* Badge contagem */}
+        {/* Badge contagem clay */}
         <View style={styles.badge}>
           <Ionicons name="location" size={12} color={colors.primary} />
           <Text style={styles.badgeText}>{pontosFiltrados.length} pontos</Text>
         </View>
       </View>
 
-      {/* Card do ponto selecionado */}
+      {/* Card do ponto selecionado clay */}
       {selected && (
         <Animated.View style={[styles.card, {
           transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [200, 0] }) }],
@@ -259,13 +201,14 @@ export default function MapaScreen({ navigation }) {
             const cfg = tipoConfig[selected.tipo];
             return (
               <>
+                <View style={styles.cardHandle} />
                 <View style={styles.cardHeader}>
-                  <View style={[styles.cardIconWrap, { backgroundColor: cfg.color + '18' }]}>
+                  <View style={[styles.cardIconWrap, { backgroundColor: cfg.color + '25' }]}>
                     <Ionicons name={cfg.icon} size={22} color={cfg.color} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.cardNome}>{selected.nome}</Text>
-                    <View style={[styles.tipoBadge, { backgroundColor: cfg.color + '18' }]}>
+                    <View style={[styles.tipoBadge, { backgroundColor: cfg.color + '20' }]}>
                       <Text style={[styles.tipoText, { color: cfg.color }]}>{selected.tipo}</Text>
                     </View>
                   </View>
@@ -279,7 +222,7 @@ export default function MapaScreen({ navigation }) {
                   <Text style={styles.cardAddressText}>{selected.endereco}</Text>
                 </View>
 
-                <TouchableOpacity style={[styles.routeBtn, { backgroundColor: cfg.color }]} onPress={() => abrirMaps(selected)}>
+                <TouchableOpacity style={[styles.routeBtn, { backgroundColor: cfg.color, shadowColor: cfg.color }]} onPress={() => abrirMaps(selected)}>
                   <Ionicons name="navigate" size={16} color={colors.white} />
                   <Text style={styles.routeBtnText}>Como chegar</Text>
                 </TouchableOpacity>
@@ -293,24 +236,41 @@ export default function MapaScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1, backgroundColor: '#EAF4EC' },
 
-  header: { backgroundColor: colors.primary, paddingTop: 56, paddingBottom: 12, paddingHorizontal: 20 },
+  header: {
+    backgroundColor: colors.primary,
+    paddingTop: 56, paddingBottom: 14, paddingHorizontal: 20,
+    borderBottomLeftRadius: 36, borderBottomRightRadius: 36,
+    overflow: 'hidden',
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.3, shadowRadius: 16, shadowOffset: { width: 0, height: 8 },
+    elevation: 10,
+    zIndex: 10,
+  },
+  blobHeader: {
+    position: 'absolute', top: -40, right: -40,
+    width: 160, height: 160, borderRadius: 80,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
   headerTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
   menuBtn: {
-    width: 40, height: 40, borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 44, height: 44, borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.25)',
     alignItems: 'center', justifyContent: 'center',
+    borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)',
   },
   logoWrap: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  logoImg: { width: 20, height: 20 },
+  logoImg: { width: 22, height: 22 },
   logoText: { fontSize: 17, fontWeight: '800', color: colors.white, letterSpacing: 0.5 },
 
-  filtrosScroll: { flexDirection: 'row', gap: 8, flexWrap: 'nowrap', paddingBottom: 8 },
+  filtrosScroll: { flexDirection: 'row', gap: 8, paddingBottom: 4 },
   filtroBtn: {
     flexDirection: 'row', alignItems: 'center', gap: 6,
     paddingHorizontal: 14, paddingVertical: 10,
-    borderRadius: 24, backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 24,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.25)',
     minHeight: 44,
   },
   filtroIconWrap: {
@@ -326,41 +286,58 @@ const styles = StyleSheet.create({
 
   myLocBtn: {
     position: 'absolute', bottom: 80, right: 16,
-    backgroundColor: colors.white, borderRadius: 30,
+    backgroundColor: colors.white, borderRadius: 24,
     width: 56, height: 56,
     alignItems: 'center', justifyContent: 'center',
-    elevation: 5,
-    shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 8, shadowOffset: { width: 0, height: 3 },
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.2, shadowRadius: 12, shadowOffset: { width: 0, height: 5 },
+    elevation: 8,
+    borderWidth: 2, borderColor: colors.primaryLight,
   },
   badge: {
     position: 'absolute', top: 12, left: 12,
     flexDirection: 'row', alignItems: 'center', gap: 4,
     backgroundColor: colors.white, borderRadius: 20,
-    paddingHorizontal: 10, paddingVertical: 5,
-    elevation: 3,
-    shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 4, shadowOffset: { width: 0, height: 1 },
+    paddingHorizontal: 12, paddingVertical: 7,
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.15, shadowRadius: 8, shadowOffset: { width: 0, height: 3 },
+    elevation: 5,
+    borderWidth: 1.5, borderColor: colors.primaryLight,
   },
-  badgeText: { fontSize: 12, fontWeight: '600', color: colors.primaryDark },
+  badgeText: { fontSize: 12, fontWeight: '700', color: colors.primaryDark },
 
   card: {
     position: 'absolute', bottom: 0, left: 0, right: 0,
     backgroundColor: colors.white,
-    borderTopLeftRadius: 24, borderTopRightRadius: 24,
-    padding: 20,
-    elevation: 12,
-    shadowColor: '#000', shadowOpacity: 0.15, shadowRadius: 12, shadowOffset: { width: 0, height: -4 },
+    borderTopLeftRadius: 36, borderTopRightRadius: 36,
+    padding: 20, paddingTop: 12,
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.2, shadowRadius: 20, shadowOffset: { width: 0, height: -6 },
+    elevation: 14,
+    borderWidth: 2, borderColor: colors.primaryLight,
+  },
+  cardHandle: {
+    width: 40, height: 4, borderRadius: 2,
+    backgroundColor: colors.border,
+    alignSelf: 'center', marginBottom: 14,
   },
   cardHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 10 },
-  cardIconWrap: { borderRadius: 12, padding: 10 },
+  cardIconWrap: { borderRadius: 18, padding: 12 },
   cardNome: { fontSize: 16, fontWeight: '700', color: colors.text, marginBottom: 4 },
-  tipoBadge: { alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 8, paddingVertical: 3 },
-  tipoText: { fontSize: 11, fontWeight: '600' },
-  closeBtn: { padding: 4 },
+  tipoBadge: { alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 },
+  tipoText: { fontSize: 11, fontWeight: '700' },
+  closeBtn: {
+    width: 34, height: 34, borderRadius: 12,
+    backgroundColor: '#F0F0F0',
+    alignItems: 'center', justifyContent: 'center',
+  },
   cardAddress: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 16 },
   cardAddressText: { fontSize: 13, color: colors.textLight, flex: 1 },
   routeBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    gap: 8, borderRadius: 14, paddingVertical: 14,
+    gap: 8, borderRadius: 24, paddingVertical: 16,
+    shadowOpacity: 0.3, shadowRadius: 10, shadowOffset: { width: 0, height: 5 },
+    elevation: 6,
   },
-  routeBtnText: { color: colors.white, fontWeight: '700', fontSize: 15 },
+  routeBtnText: { color: colors.white, fontWeight: '800', fontSize: 15 },
 });

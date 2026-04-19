@@ -9,13 +9,11 @@ export default function SplashScreen({ navigation }) {
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    // Entrada: ícone escala + conteúdo fade/slide
     Animated.parallel([
       Animated.spring(scaleIcon, { toValue: 1, friction: 5, tension: 80, useNativeDriver: true }),
       Animated.timing(fadeAnim,  { toValue: 1, duration: 800, delay: 200, useNativeDriver: true }),
       Animated.timing(slideAnim, { toValue: 0, duration: 800, delay: 200, useNativeDriver: true }),
     ]).start(() => {
-      // Pulso suave no ícone após entrada
       Animated.loop(
         Animated.sequence([
           Animated.timing(pulseAnim, { toValue: 1.08, duration: 900, useNativeDriver: true }),
@@ -27,9 +25,13 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {/* Blobs decorativos clay */}
+      <View style={styles.blobTop} />
+      <View style={styles.blobBottom} />
+
       <Animated.View style={[styles.content, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
 
-        <Animated.View style={{ transform: [{ scale: scaleIcon }, { scale: pulseAnim }], marginBottom: 24 }}>
+        <Animated.View style={[styles.logoWrap, { transform: [{ scale: scaleIcon }, { scale: pulseAnim }] }]}>
           <Image source={require('../../assets/Verdenovologo.png')} style={styles.logo} resizeMode="contain" />
         </Animated.View>
 
@@ -54,11 +56,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
+    overflow: 'hidden',
+  },
+  blobTop: {
+    position: 'absolute', top: -80, right: -60,
+    width: 220, height: 220, borderRadius: 110,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+  },
+  blobBottom: {
+    position: 'absolute', bottom: -60, left: -80,
+    width: 260, height: 260, borderRadius: 130,
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
   content: { alignItems: 'center', width: '100%' },
-  logo: { width: 112, height: 112 },
+  logoWrap: {
+    width: 130, height: 130,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255,255,255,0.22)',
+    alignItems: 'center', justifyContent: 'center',
+    marginBottom: 28,
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.4, shadowRadius: 20, shadowOffset: { width: 0, height: 10 },
+    elevation: 12,
+    borderWidth: 3, borderColor: 'rgba(255,255,255,0.35)',
+  },
+  logo: { width: 80, height: 80 },
   title: {
-    fontSize: 42,
+    fontSize: 44,
     fontWeight: '900',
     color: colors.white,
     letterSpacing: -0.5,
@@ -73,27 +97,22 @@ const styles = StyleSheet.create({
   },
   desc: {
     fontSize: 15,
-    fontWeight: '400',
-    color: 'rgba(255,255,255,0.7)',
+    color: 'rgba(255,255,255,0.75)',
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 48,
   },
   button: {
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: colors.white,
-    borderRadius: 16,
-    paddingVertical: 16,
+    borderRadius: 28,
+    paddingVertical: 18,
     paddingHorizontal: 32,
-    gap: 10,
     width: '100%',
-    justifyContent: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
+    alignItems: 'center',
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.35, shadowRadius: 16, shadowOffset: { width: 0, height: 8 },
+    elevation: 10,
+    borderWidth: 3, borderColor: 'rgba(255,255,255,0.6)',
   },
-  buttonText: { fontSize: 16, fontWeight: '700', color: colors.primaryDark },
+  buttonText: { fontSize: 17, fontWeight: '800', color: colors.primaryDark },
 });
