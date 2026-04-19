@@ -8,7 +8,7 @@ Aplicativo mobile de conscientização ambiental que ajuda usuários a encontrar
 
 O **VerDeNovo** conecta pessoas a pontos de coleta de resíduos nas cidades de **Barueri** e **Itapevi** (SP), oferecendo:
 
-- Mapa interativo com 12 pontos de coleta categorizados
+- Mapa interativo com pontos de coleta categorizados
 - Guia completo de reciclagem por tipo de material
 - Dicas rápidas de descarte consciente
 - Detecção de localização para encontrar o ponto mais próximo
