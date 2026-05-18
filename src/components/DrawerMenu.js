@@ -59,6 +59,20 @@ export default function DrawerMenu(props) {
         <View style={styles.divider} />
 
         <TouchableOpacity
+          style={styles.loginBtn}
+          activeOpacity={0.75}
+          onPress={() => props.navigation.navigate('Login')}
+        >
+          <View style={styles.loginIconWrap}>
+            <Ionicons name="person-outline" size={20} color={colors.white} />
+          </View>
+          <Text style={styles.loginText}>Entrar / Cadastrar</Text>
+          <Ionicons name="chevron-forward" size={16} color={colors.white} />
+        </TouchableOpacity>
+
+        <View style={styles.divider} />
+
+        <TouchableOpacity
           style={styles.shareBtn}
           activeOpacity={0.75}
           onPress={() => Share.share({
@@ -166,6 +180,23 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   shareText: { flex: 1, fontSize: 15, fontWeight: '700', color: colors.primaryDark },
+
+  loginBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 14,
+    paddingVertical: 16, paddingHorizontal: 16,
+    borderRadius: 24,
+    backgroundColor: colors.primary,
+    shadowColor: colors.primaryDark,
+    shadowOpacity: 0.25, shadowRadius: 10, shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+    borderWidth: 1.5, borderColor: colors.primaryMid,
+  },
+  loginIconWrap: {
+    width: 38, height: 38, borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  loginText: { flex: 1, fontSize: 15, fontWeight: '800', color: colors.white },
 
   footerBox: {
     position: 'absolute', bottom: 32, left: 0, right: 0,

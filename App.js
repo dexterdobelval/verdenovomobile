@@ -10,6 +10,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import MapaScreen from './src/screens/MapaScreen';
 import DicasScreen from './src/screens/DicasScreen';
 import SobreScreen from './src/screens/SobreScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import DrawerMenu from './src/components/DrawerMenu';
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +37,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Main" component={MainDrawer} />
+        <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
