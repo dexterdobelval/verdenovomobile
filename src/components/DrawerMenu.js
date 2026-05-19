@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Share } from 'react-na
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme';
+import { useAuth } from '../contexts/AuthContext';
 
 const items = [
   { name: 'Início', icon: 'home-outline',           iconActive: 'home' },
@@ -13,6 +14,7 @@ const items = [
 
 export default function DrawerMenu(props) {
   const current = props.state.routeNames[props.state.index];
+  const { user, logout } = useAuth();
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
@@ -24,7 +26,7 @@ export default function DrawerMenu(props) {
           <Image source={require('../../assets/Verdenovologo.png')} style={styles.logoImg} resizeMode="contain" />
         </View>
         <Text style={styles.appName}>VerDeNovo</Text>
-        <Text style={styles.appSub}>Reciclagem & Consciência</Text>
+        <Text style={styles.appSub}>{user?.email ?? 'Reciclagem & Consciência'}</Text>
       </View>
 
       {/* Nav items */}
@@ -58,16 +60,11 @@ export default function DrawerMenu(props) {
 
         <View style={styles.divider} />
 
-        <TouchableOpacity
-          style={styles.loginBtn}
-          activeOpacity={0.75}
-          onPress={() => props.navigation.navigate('Login')}
-        >
+        <TouchableOpacity style={styles.loginBtn} activeOpacity={0.75} onPress={logout}>
           <View style={styles.loginIconWrap}>
-            <Ionicons name="person-outline" size={20} color={colors.white} />
+            <Ionicons name="log-out-outline" size={20} color={colors.white} />
           </View>
-          <Text style={styles.loginText}>Entrar / Cadastrar</Text>
-          <Ionicons name="chevron-forward" size={16} color={colors.white} />
+          <Text style={styles.loginText}>Sair</Text>
         </TouchableOpacity>
 
         <View style={styles.divider} />

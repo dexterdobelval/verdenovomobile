@@ -41,7 +41,7 @@ export default function SplashScreen({ navigation }) {
           Encontre pontos de coleta perto de você e saiba como descartar lixo do jeito certo.
         </Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.replace('Main')} activeOpacity={0.85}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.replace('Login')} activeOpacity={0.85}>
           <Text style={styles.buttonText}>Começar</Text>
         </TouchableOpacity>
       </Animated.View>

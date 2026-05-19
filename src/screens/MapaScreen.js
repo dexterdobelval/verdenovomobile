@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+// Arquivo: src/screens/MapaScreen.js
+// Caminho: src/screens/MapaScreen.js
+// Deps: (já existentes) + src/services/api.ts
+// Substitui array hardcoded por fetch da API. useMemo evita re-render dos markers
+// a cada mudança de estado não relacionada. Pontos sem lat/lng são filtrados silenciosamente.
+
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
   Image, Linking, Animated, ActivityIndicator, ScrollView,
@@ -7,21 +13,7 @@ import MapView, { Marker, Circle, PROVIDER_DEFAULT } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme';
-
-const pontos = [
-  { id: '1',  nome: 'Ecoponto Barueri Centro',    tipo: 'Geral',            endereco: 'R. Cel. Marcos Rodrigues de Barros, 300 – Barueri',      lat: -23.5044, lng: -46.8761 },
-  { id: '2',  nome: 'Recicla Jardim Silveira',     tipo: 'Papel e Plástico', endereco: 'R. Henriqueta Mendes Guerra, 550 – Jd. Silveira, Barueri', lat: -23.4963, lng: -46.8901 },
-  { id: '3',  nome: 'TechRecicla Barueri',         tipo: 'Eletrônicos',      endereco: 'Av. Sebastião Davino dos Reis, 680 – Barueri',            lat: -23.5118, lng: -46.8643 },
-  { id: '4',  nome: 'PilhaPoint Engenho Novo',     tipo: 'Pilhas e Baterias',endereco: 'R. Guilherme Lorenzini, 1200 – Engenho Novo, Barueri',    lat: -23.5081, lng: -46.8812 },
-  { id: '5',  nome: 'EcoFarma Barueri',            tipo: 'Medicamentos',     endereco: 'R. Tupinambás, 88 – Centro, Barueri',                     lat: -23.5009, lng: -46.8698 },
-  { id: '6',  nome: 'Coleta Verde Barueri Norte',  tipo: 'Papel e Plástico', endereco: 'Av. Presidente Médici, 430 – Barueri',                    lat: -23.4881, lng: -46.8774 },
-  { id: '7',  nome: 'Ecoponto Itapevi Centro',     tipo: 'Geral',            endereco: 'Av. Presidente Vargas, 500 – Centro, Itapevi',            lat: -23.5488, lng: -46.9338 },
-  { id: '8',  nome: 'EletroDescarte Itapevi',      tipo: 'Eletrônicos',      endereco: 'R. Benedito Rodrigues, 90 – Jd. Nova Itapevi',            lat: -23.5421, lng: -46.9271 },
-  { id: '9',  nome: 'BateriaRecicla Itapevi',      tipo: 'Pilhas e Baterias',endereco: 'R. Américo Emílio Romi, 340 – Itapevi',                   lat: -23.5561, lng: -46.9398 },
-  { id: '10', nome: 'Descarte Seguro Itapevi',     tipo: 'Medicamentos',     endereco: 'R. Sete de Setembro, 155 – Centro, Itapevi',              lat: -23.5508, lng: -46.9312 },
-  { id: '11', nome: 'Coleta Verde Itapevi Sul',    tipo: 'Papel e Plástico', endereco: 'R. João Pessoa, 210 – Jd. Briquet, Itapevi',              lat: -23.5612, lng: -46.9258 },
-  { id: '12', nome: 'Ecoponto Itapevi Leste',      tipo: 'Geral',            endereco: 'R. das Acácias, 88 – Jd. Paulista, Itapevi',             lat: -23.5447, lng: -46.9189 },
-];
+import { api } from '../services/api';
 
 const tipoConfig = {
   'Geral':             { color: colors.primary,  icon: 'leaf-outline',             pinColor: colors.primary  },
@@ -34,66 +26,66 @@ const tipoConfig = {
 const FILTROS = ['Todos', 'Geral', 'Papel e Plástico', 'Eletrônicos', 'Pilhas e Baterias', 'Medicamentos'];
 
 const REGIAO_INICIAL = {
-  latitude: -23.5260,
-  longitude: -46.9050,
-  latitudeDelta: 0.14,
-  longitudeDelta: 0.14,
+  latitude: -23.5260, longitude: -46.9050,
+  latitudeDelta: 0.14, longitudeDelta: 0.14,
 };
 
 export default function MapaScreen({ navigation }) {
-  const [userLocation, setUserLocation]   = useState(null);
-  const [selected, setSelected]           = useState(null);
-  const [filtro, setFiltro]               = useState('Todos');
-  const [loadingLoc, setLoadingLoc]       = useState(true);
-  const mapRef                            = useRef(null);
-  const cardAnim                          = useRef(new Animated.Value(0)).current;
+  const [pontos, setPontos]           = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
+  const [selected, setSelected]       = useState(null);
+  const [filtro, setFiltro]           = useState('Todos');
+  const [loadingLoc, setLoadingLoc]   = useState(true);
+  const [loadingPontos, setLoadingPontos] = useState(true);
+  const [apiError, setApiError]       = useState(false);
+  const mapRef  = useRef(null);
+  const cardAnim = useRef(new Animated.Value(0)).current;
 
+  // Busca localização e pontos em paralelo
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
+    Location.requestForegroundPermissionsAsync().then(({ status }) => {
       if (status === 'granted') {
-        const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-        setUserLocation(loc.coords);
+        Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced })
+          .then(loc => setUserLocation(loc.coords))
+          .catch(() => {});
       }
       setLoadingLoc(false);
-    })();
+    });
+
+    api.get('/pontos-coleta')
+      .then(({ data }) => {
+        // Filtra pontos sem coordenadas para não crashar o MapView
+        setPontos((data.data ?? []).filter(p => p.lat != null && p.lng != null));
+      })
+      .catch(() => setApiError(true))
+      .finally(() => setLoadingPontos(false));
   }, []);
 
-  const pontosFiltrados = filtro === 'Todos' ? pontos : pontos.filter(p => p.tipo === filtro);
+  // useMemo: markers só recalculados quando pontos ou filtro mudam
+  const pontosFiltrados = useMemo(
+    () => filtro === 'Todos' ? pontos : pontos.filter(p => p.tipo === filtro),
+    [pontos, filtro],
+  );
 
   const selecionarPonto = (ponto) => {
     setSelected(ponto);
     mapRef.current?.animateToRegion({
-      latitude: ponto.lat - 0.008,
-      longitude: ponto.lng,
-      latitudeDelta: 0.03,
-      longitudeDelta: 0.03,
+      latitude: ponto.lat - 0.008, longitude: ponto.lng,
+      latitudeDelta: 0.03, longitudeDelta: 0.03,
     }, 400);
     Animated.spring(cardAnim, { toValue: 1, useNativeDriver: true, friction: 8 }).start();
   };
 
   const fecharCard = () => {
-    Animated.timing(cardAnim, { toValue: 0, duration: 200, useNativeDriver: true }).start(() => setSelected(null));
+    Animated.timing(cardAnim, { toValue: 0, duration: 200, useNativeDriver: true })
+      .start(() => setSelected(null));
   };
 
-  const abrirMaps = (item) => {
-    Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`);
-  };
-
-  const irParaMinhaLocalizacao = () => {
-    if (!userLocation) return;
-    mapRef.current?.animateToRegion({
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude,
-      latitudeDelta: 0.04,
-      longitudeDelta: 0.04,
-    }, 500);
-  };
+  const isLoading = loadingLoc || loadingPontos;
 
   return (
     <View style={styles.container}>
 
-      {/* Header clay */}
       <View style={styles.header}>
         <View style={styles.blobHeader} />
         <View style={styles.headerTop}>
@@ -107,18 +99,14 @@ export default function MapaScreen({ navigation }) {
           <View style={{ width: 40 }} />
         </View>
 
-        {/* Filtros */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filtrosScroll}>
           {FILTROS.map((f) => {
             const ativo = filtro === f;
-            const cfg = f !== 'Todos' ? tipoConfig[f] : null;
+            const cfg   = f !== 'Todos' ? tipoConfig[f] : null;
             return (
               <TouchableOpacity
                 key={f}
-                style={[
-                  styles.filtroBtn,
-                  ativo && { backgroundColor: cfg ? cfg.color : colors.white, borderColor: 'transparent' },
-                ]}
+                style={[styles.filtroBtn, ativo && { backgroundColor: cfg ? cfg.color : colors.white, borderColor: 'transparent' }]}
                 onPress={() => { setFiltro(f); fecharCard(); }}
                 activeOpacity={0.8}
               >
@@ -136,12 +124,29 @@ export default function MapaScreen({ navigation }) {
         </ScrollView>
       </View>
 
-      {/* Mapa */}
       <View style={styles.mapContainer}>
-        {loadingLoc ? (
+        {isLoading ? (
           <View style={styles.loading}>
             <ActivityIndicator size="large" color={colors.primary} />
             <Text style={styles.loadingText}>Carregando mapa...</Text>
+          </View>
+        ) : apiError ? (
+          <View style={styles.loading}>
+            <Ionicons name="cloud-offline-outline" size={48} color={colors.textLight} />
+            <Text style={styles.loadingText}>Não foi possível carregar os pontos.</Text>
+            <TouchableOpacity
+              style={styles.retryBtn}
+              onPress={() => {
+                setApiError(false);
+                setLoadingPontos(true);
+                api.get('/pontos-coleta')
+                  .then(({ data }) => setPontos((data.data ?? []).filter(p => p.lat != null && p.lng != null)))
+                  .catch(() => setApiError(true))
+                  .finally(() => setLoadingPontos(false));
+              }}
+            >
+              <Text style={styles.retryText}>Tentar novamente</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <MapView
@@ -161,12 +166,11 @@ export default function MapaScreen({ navigation }) {
                 strokeWidth={1}
               />
             )}
-
             {pontosFiltrados.map((ponto) => {
-              const cfg = tipoConfig[ponto.tipo];
+              const cfg = tipoConfig[ponto.tipo] ?? tipoConfig['Geral'];
               return (
                 <Marker
-                  key={ponto.id}
+                  key={String(ponto.id)}
                   coordinate={{ latitude: ponto.lat, longitude: ponto.lng }}
                   onPress={() => selecionarPonto(ponto)}
                   pinColor={cfg.pinColor}
@@ -177,28 +181,33 @@ export default function MapaScreen({ navigation }) {
           </MapView>
         )}
 
-        {/* Botão minha localização clay */}
-        {userLocation && (
-          <TouchableOpacity style={styles.myLocBtn} onPress={irParaMinhaLocalizacao}>
+        {!isLoading && !apiError && userLocation && (
+          <TouchableOpacity
+            style={styles.myLocBtn}
+            onPress={() => mapRef.current?.animateToRegion({
+              latitude: userLocation.latitude, longitude: userLocation.longitude,
+              latitudeDelta: 0.04, longitudeDelta: 0.04,
+            }, 500)}
+          >
             <Ionicons name="locate" size={26} color={colors.primary} />
           </TouchableOpacity>
         )}
 
-        {/* Badge contagem clay */}
-        <View style={styles.badge}>
-          <Ionicons name="location" size={12} color={colors.primary} />
-          <Text style={styles.badgeText}>{pontosFiltrados.length} pontos</Text>
-        </View>
+        {!isLoading && !apiError && (
+          <View style={styles.badge}>
+            <Ionicons name="location" size={12} color={colors.primary} />
+            <Text style={styles.badgeText}>{pontosFiltrados.length} pontos</Text>
+          </View>
+        )}
       </View>
 
-      {/* Card do ponto selecionado clay */}
       {selected && (
         <Animated.View style={[styles.card, {
           transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [200, 0] }) }],
           opacity: cardAnim,
         }]}>
           {(() => {
-            const cfg = tipoConfig[selected.tipo];
+            const cfg = tipoConfig[selected.tipo] ?? tipoConfig['Geral'];
             return (
               <>
                 <View style={styles.cardHandle} />
@@ -216,13 +225,14 @@ export default function MapaScreen({ navigation }) {
                     <Ionicons name="close" size={20} color={colors.textLight} />
                   </TouchableOpacity>
                 </View>
-
                 <View style={styles.cardAddress}>
                   <Ionicons name="location-outline" size={14} color={colors.textLight} />
                   <Text style={styles.cardAddressText}>{selected.endereco}</Text>
                 </View>
-
-                <TouchableOpacity style={[styles.routeBtn, { backgroundColor: cfg.color, shadowColor: cfg.color }]} onPress={() => abrirMaps(selected)}>
+                <TouchableOpacity
+                  style={[styles.routeBtn, { backgroundColor: cfg.color, shadowColor: cfg.color }]}
+                  onPress={() => Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`)}
+                >
                   <Ionicons name="navigate" size={16} color={colors.white} />
                   <Text style={styles.routeBtnText}>Como chegar</Text>
                 </TouchableOpacity>
@@ -237,107 +247,36 @@ export default function MapaScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#EAF4EC' },
-
-  header: {
-    backgroundColor: colors.primary,
-    paddingTop: 56, paddingBottom: 14, paddingHorizontal: 20,
-    borderBottomLeftRadius: 36, borderBottomRightRadius: 36,
-    overflow: 'hidden',
-    shadowColor: colors.primaryDark,
-    shadowOpacity: 0.3, shadowRadius: 16, shadowOffset: { width: 0, height: 8 },
-    elevation: 10,
-    zIndex: 10,
-  },
-  blobHeader: {
-    position: 'absolute', top: -40, right: -40,
-    width: 160, height: 160, borderRadius: 80,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-  },
+  header: { backgroundColor: colors.primary, paddingTop: 56, paddingBottom: 14, paddingHorizontal: 20, borderBottomLeftRadius: 36, borderBottomRightRadius: 36, overflow: 'hidden', shadowColor: colors.primaryDark, shadowOpacity: 0.3, shadowRadius: 16, shadowOffset: { width: 0, height: 8 }, elevation: 10, zIndex: 10 },
+  blobHeader: { position: 'absolute', top: -40, right: -40, width: 160, height: 160, borderRadius: 80, backgroundColor: 'rgba(255,255,255,0.1)' },
   headerTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
-  menuBtn: {
-    width: 44, height: 44, borderRadius: 18,
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    alignItems: 'center', justifyContent: 'center',
-    borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)',
-  },
+  menuBtn: { width: 44, height: 44, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.25)', alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)' },
   logoWrap: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   logoImg: { width: 22, height: 22 },
   logoText: { fontSize: 17, fontWeight: '800', color: colors.white, letterSpacing: 0.5 },
-
   filtrosScroll: { flexDirection: 'row', gap: 8, paddingBottom: 4 },
-  filtroBtn: {
-    flexDirection: 'row', alignItems: 'center', gap: 6,
-    paddingHorizontal: 14, paddingVertical: 10,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.25)',
-    minHeight: 44,
-  },
-  filtroIconWrap: {
-    width: 22, height: 22, borderRadius: 11,
-    alignItems: 'center', justifyContent: 'center',
-  },
+  filtroBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 24, backgroundColor: 'rgba(255,255,255,0.2)', borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.25)', minHeight: 44 },
+  filtroIconWrap: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   filtroText: { fontSize: 13, color: 'rgba(255,255,255,0.95)', fontWeight: '500' },
-
   mapContainer: { flex: 1 },
   map: { flex: 1 },
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  loadingText: { fontSize: 14, color: colors.textLight },
-
-  myLocBtn: {
-    position: 'absolute', bottom: 80, right: 16,
-    backgroundColor: colors.white, borderRadius: 24,
-    width: 56, height: 56,
-    alignItems: 'center', justifyContent: 'center',
-    shadowColor: colors.primaryDark,
-    shadowOpacity: 0.2, shadowRadius: 12, shadowOffset: { width: 0, height: 5 },
-    elevation: 8,
-    borderWidth: 2, borderColor: colors.primaryLight,
-  },
-  badge: {
-    position: 'absolute', top: 12, left: 12,
-    flexDirection: 'row', alignItems: 'center', gap: 4,
-    backgroundColor: colors.white, borderRadius: 20,
-    paddingHorizontal: 12, paddingVertical: 7,
-    shadowColor: colors.primaryDark,
-    shadowOpacity: 0.15, shadowRadius: 8, shadowOffset: { width: 0, height: 3 },
-    elevation: 5,
-    borderWidth: 1.5, borderColor: colors.primaryLight,
-  },
+  loadingText: { fontSize: 14, color: colors.textLight, textAlign: 'center' },
+  retryBtn: { marginTop: 8, backgroundColor: colors.primary, borderRadius: 20, paddingHorizontal: 24, paddingVertical: 12 },
+  retryText: { color: colors.white, fontWeight: '700', fontSize: 14 },
+  myLocBtn: { position: 'absolute', bottom: 80, right: 16, backgroundColor: colors.white, borderRadius: 24, width: 56, height: 56, alignItems: 'center', justifyContent: 'center', shadowColor: colors.primaryDark, shadowOpacity: 0.2, shadowRadius: 12, shadowOffset: { width: 0, height: 5 }, elevation: 8, borderWidth: 2, borderColor: colors.primaryLight },
+  badge: { position: 'absolute', top: 12, left: 12, flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: colors.white, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 7, shadowColor: colors.primaryDark, shadowOpacity: 0.15, shadowRadius: 8, shadowOffset: { width: 0, height: 3 }, elevation: 5, borderWidth: 1.5, borderColor: colors.primaryLight },
   badgeText: { fontSize: 12, fontWeight: '700', color: colors.primaryDark },
-
-  card: {
-    position: 'absolute', bottom: 0, left: 0, right: 0,
-    backgroundColor: colors.white,
-    borderTopLeftRadius: 36, borderTopRightRadius: 36,
-    padding: 20, paddingTop: 12,
-    shadowColor: colors.primaryDark,
-    shadowOpacity: 0.2, shadowRadius: 20, shadowOffset: { width: 0, height: -6 },
-    elevation: 14,
-    borderWidth: 2, borderColor: colors.primaryLight,
-  },
-  cardHandle: {
-    width: 40, height: 4, borderRadius: 2,
-    backgroundColor: colors.border,
-    alignSelf: 'center', marginBottom: 14,
-  },
+  card: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: colors.white, borderTopLeftRadius: 36, borderTopRightRadius: 36, padding: 20, paddingTop: 12, shadowColor: colors.primaryDark, shadowOpacity: 0.2, shadowRadius: 20, shadowOffset: { width: 0, height: -6 }, elevation: 14, borderWidth: 2, borderColor: colors.primaryLight },
+  cardHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: colors.border, alignSelf: 'center', marginBottom: 14 },
   cardHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 10 },
   cardIconWrap: { borderRadius: 18, padding: 12 },
   cardNome: { fontSize: 16, fontWeight: '700', color: colors.text, marginBottom: 4 },
   tipoBadge: { alignSelf: 'flex-start', borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 },
   tipoText: { fontSize: 11, fontWeight: '700' },
-  closeBtn: {
-    width: 34, height: 34, borderRadius: 12,
-    backgroundColor: '#F0F0F0',
-    alignItems: 'center', justifyContent: 'center',
-  },
+  closeBtn: { width: 34, height: 34, borderRadius: 12, backgroundColor: '#F0F0F0', alignItems: 'center', justifyContent: 'center' },
   cardAddress: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 16 },
   cardAddressText: { fontSize: 13, color: colors.textLight, flex: 1 },
-  routeBtn: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    gap: 8, borderRadius: 24, paddingVertical: 16,
-    shadowOpacity: 0.3, shadowRadius: 10, shadowOffset: { width: 0, height: 5 },
-    elevation: 6,
-  },
+  routeBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderRadius: 24, paddingVertical: 16, shadowOpacity: 0.3, shadowRadius: 10, shadowOffset: { width: 0, height: 5 }, elevation: 6 },
   routeBtnText: { color: colors.white, fontWeight: '800', fontSize: 15 },
 });

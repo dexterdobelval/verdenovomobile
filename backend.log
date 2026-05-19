@@ -1,0 +1,6 @@
+
+> verdenovo-backend@1.0.0 start
+> node dist/server.js
+
+✅ SQL Server conectado
+🚀 API rodando em http://localhost:3001
